@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import './wallet_provider.dart';
+import 'Backend/wallet_provider.dart';
 
 void main(List<String> args) {
   runApp(
