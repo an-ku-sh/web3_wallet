@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import './wallet_provider.dart';
 
 void main(List<String> args) {
-  runApp(const HomePage());
+  runApp(
+    ChangeNotifierProvider<WalletProvider>(
+      create: (context) => WalletProvider(),
+      child: HomePage(),
+    ),
+  );
 }
 
 class HomePage extends StatelessWidget {
@@ -9,6 +16,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //Instance of wallet provider
+    final walletProvider = Provider.of<WalletProvider>(context);
+
+    //Material App
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Web3_Wallet',
@@ -21,7 +32,16 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final mnemonic = walletProvider.generateMnemonic();
+                  final privateKey =
+                      await walletProvider.getPrivateKey(mnemonic);
+                  final publicKey =
+                      await walletProvider.getPublicKey(privateKey);
+                  print("mnemonic key: $mnemonic");
+                  print("private key: $privateKey");
+                  print("public Key: $publicKey");
+                },
                 child: const Text("Generate Wallet"),
               )
             ],
